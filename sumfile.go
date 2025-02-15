@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 )
 
@@ -11,13 +10,18 @@ func check(e error) {
 	}
 }
 
-func sumfile() {
-	data, err := os.ReadFile("numbers.txt")
+func sumfile(PATH string) string {
+	f, err := os.Open(PATH)
 	check(err)
 
-	fmt.Print(string(data))
-}
+	stat, err := f.Stat()
+	check(err)
 
-func main() {
-	sumfile()
+	size := stat.Size()
+
+	bytes := make([]byte, size)
+	contents, err := f.Read(bytes)
+	check(err)
+
+	return string(bytes[:contents])
 }
