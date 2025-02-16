@@ -2,7 +2,12 @@ package main
 
 import (
 	"os"
+	"io"
 )
+
+type ioReader interface {
+	io.Reader
+}
 
 func check(e error) {
 	if e != nil {
