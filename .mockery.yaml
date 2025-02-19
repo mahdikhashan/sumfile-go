@@ -1,5 +1,0 @@
-with-expecter: true
-packges:
-  github.com/mahdikhashan/sumfile-go:
-    config:
-      interfaces:

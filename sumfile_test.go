@@ -10,7 +10,7 @@ import (
 // TODO: use mockery and pass mocked io.Read interface
 func Test_(t *testing.T) {
 	str := "0\n2\n3\n4\n5\n"
-	r := mocks.newIoReader(t)
+	r := new(mocks.IoReader)
 	r.
 		On("Read", mock.Anything).
 		Run(func(args mock.Arguments) {
