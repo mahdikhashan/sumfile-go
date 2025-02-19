@@ -2,11 +2,13 @@ package main
 
 import (
 	"os"
-	"io"
 )
 
-type ioReader interface {
-	io.Reader
+type File interface {
+	Open(name string) (*os.File, error)
+	Stat() (os.FileInfo, error)
+	Read(b []byte) (n int, err error)
+	Close() error
 }
 
 func check(e error) {

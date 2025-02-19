@@ -8,12 +8,28 @@ import(
 
 func Test_(t *testing.T) {
 	str := "0\n2\n3\n4\n5\n"
-	ctrl := gomock.NewController(t)
 
-	m := NewMockioReader(ctrl)
+	c := gomock.NewController(t)
+	defer c.Finish()
 
-	m.
-		EXPECT().
-		Read("temp.txt").
-		Return(str)
+	m := NewMockFile(c)
+	m.EXPECT().Open("temp.txt").Return(m, nil)
+
+	mInfo := NewMockFileInfo(c)
+	mInfo.EXPECT().Size().Return(int64(11))
+
+	m.EXPECT().Stat().Return(mInfo, nil)
+
+	m.EXPECT().Read(gomock.Any()).DoAndReturn(func(b []byte) (int, error) {
+		copy(b, str)
+		return 11, nil
+	})
+	m.EXPECT().Close().Return(nil)
+
+	result := sumfile("temp.txt")
+
+	expected := "0\n1\n2\n3\n4\n5"
+	if result != expected {
+		t.Errorf("Expected %q, got %q", expected, result)
+	}
 }
