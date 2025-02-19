@@ -1,6 +1,7 @@
 package main
 
 import(
+	"os"
 	"testing"
 
 	"go.uber.org/mock/gomock"
@@ -11,6 +12,10 @@ func Test_(t *testing.T) {
 
 	c := gomock.NewController(t)
 	defer c.Finish()
+
+	openFile = func(name string) (*os.File, error) {
+		return nil, nil
+	}
 
 	m := NewMockFile(c)
 	m.EXPECT().Open("temp.txt").Return(m, nil)

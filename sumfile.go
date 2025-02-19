@@ -17,8 +17,10 @@ func check(e error) {
 	}
 }
 
+var openFile = os.Open
+
 func sumfile(PATH string) string {
-	f, err := os.Open(PATH)
+	f, err := openFile(PATH)
 	check(err)
 
 	stat, err := f.Stat()
