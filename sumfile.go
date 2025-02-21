@@ -5,10 +5,19 @@ import (
 )
 
 type File interface {
-	Open(name string) (*os.File, error)
 	Stat() (os.FileInfo, error)
 	Read(b []byte) (n int, err error)
 	Close() error
+}
+
+type FileOpener interface {
+	Open(name string) (File, error)
+}
+
+type OSFileOpen struct{}
+
+func (o *OSFileOpen) Open(name string) (File, error) {
+	return os.Open(name)
 }
 
 func check(e error) {
@@ -17,11 +26,11 @@ func check(e error) {
 	}
 }
 
-var openFile = os.Open
-
-func sumfile(PATH string) string {
-	f, err := openFile(PATH)
+func sumfile(openFile FileOpener, PATH string) string {
+	f, err := openFile.Open(PATH)
 	check(err)
+
+	defer f.Close()
 
 	stat, err := f.Stat()
 	check(err)

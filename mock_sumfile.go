@@ -54,21 +54,6 @@ func (mr *MockFileMockRecorder) Close() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockFile)(nil).Close))
 }
 
-// Open mocks base method.
-func (m *MockFile) Open(name string) (*os.File, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Open", name)
-	ret0, _ := ret[0].(*os.File)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// Open indicates an expected call of Open.
-func (mr *MockFileMockRecorder) Open(name any) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Open", reflect.TypeOf((*MockFile)(nil).Open), name)
-}
-
 // Read mocks base method.
 func (m *MockFile) Read(b []byte) (int, error) {
 	m.ctrl.T.Helper()
@@ -97,4 +82,43 @@ func (m *MockFile) Stat() (os.FileInfo, error) {
 func (mr *MockFileMockRecorder) Stat() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Stat", reflect.TypeOf((*MockFile)(nil).Stat))
+}
+
+// MockFileOpener is a mock of FileOpener interface.
+type MockFileOpener struct {
+	ctrl     *gomock.Controller
+	recorder *MockFileOpenerMockRecorder
+	isgomock struct{}
+}
+
+// MockFileOpenerMockRecorder is the mock recorder for MockFileOpener.
+type MockFileOpenerMockRecorder struct {
+	mock *MockFileOpener
+}
+
+// NewMockFileOpener creates a new mock instance.
+func NewMockFileOpener(ctrl *gomock.Controller) *MockFileOpener {
+	mock := &MockFileOpener{ctrl: ctrl}
+	mock.recorder = &MockFileOpenerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockFileOpener) EXPECT() *MockFileOpenerMockRecorder {
+	return m.recorder
+}
+
+// Open mocks base method.
+func (m *MockFileOpener) Open(name string) (File, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Open", name)
+	ret0, _ := ret[0].(File)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Open indicates an expected call of Open.
+func (mr *MockFileOpenerMockRecorder) Open(name any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Open", reflect.TypeOf((*MockFileOpener)(nil).Open), name)
 }
